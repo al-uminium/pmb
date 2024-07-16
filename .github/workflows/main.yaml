@@ -38,4 +38,4 @@ jobs:
       - name: Deploy
         run: |
           cd pmb-backend
-          railway up
+          railway up --service ppm-backend
