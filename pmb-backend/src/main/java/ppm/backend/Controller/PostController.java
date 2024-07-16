@@ -70,8 +70,8 @@ public class PostController {
     UUID eid = UUID.randomUUID();
     expense.setEid(eid);
     expense.setExid(exid);
-    dataSvc.createExpenseInDB(expense);
     dataSvc.createExpenseInMongo(expense.getExpenseSplit(), eid, exid);
+    dataSvc.createExpenseInDB(expense);
     return ResponseEntity.ok(mapper.writeValueAsString("Expense created"));
   }
 
