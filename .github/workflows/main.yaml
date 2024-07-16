@@ -1,14 +1,16 @@
-name: Vercel Production Deployment
+name: PMB Deployment
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
 on:
   push:
     branches:
       - main
 jobs:
-  Deploy-Production:
+  # https://vercel.com/guides/how-can-i-use-github-actions-with-vercel
+  Deploy-Angular-To-Vercel:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -26,3 +28,14 @@ jobs:
         run: |
           cd pmb-frontend
           vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+  
+  Deploy-Springboot-To-Railway:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Railway
+        run: npm i -g @railway/cli
+      - name: Deploy
+        run: |
+          cd pmb-backend
+          railway up
