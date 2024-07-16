@@ -9,9 +9,12 @@ import ppm.backend.Model.Expenditure;
 import ppm.backend.Model.Expense;
 import ppm.backend.Model.User;
 import ppm.backend.Service.DataService;
+import ppm.backend.Service.UtilService;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,8 @@ public class PostController {
 
   @Autowired
   private DataService dataSvc;
+  @Autowired
+  private UtilService utilSvc;
 
   private ObjectMapper mapper = new ObjectMapper();
 
@@ -38,11 +43,15 @@ public class PostController {
     System.out.println(expenditure.toString());
     try {
       System.out.println(expenditure);
+      String inviteToken = utilSvc.generateInviteToken(25);
+      expenditure.setInviteToken(inviteToken);
       dataSvc.initializeNewExpenditure(expenditure.getExpenditureName(),
           expenditure.getDefaultCurrency(),
           expenditure.getUsers(),
           expenditure.getInviteToken());
-      return ResponseEntity.ok(mapper.writeValueAsString("Expenditure created"));
+      Map<String, String> resp = new HashMap<>();
+      resp.put("inviteToken", inviteToken);
+      return ResponseEntity.ok(mapper.writeValueAsString(resp));
     } catch (SQLException e) {
       e.printStackTrace();
       ResponseEntity.badRequest().body("Failed to create expenditure");

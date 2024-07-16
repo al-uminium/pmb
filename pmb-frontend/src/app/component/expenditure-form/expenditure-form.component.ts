@@ -64,10 +64,12 @@ export class ExpenditureFormComponent implements OnInit{
     const currency = this.selectedCurrency?.value;
     const inviteToken = this.utilSvc.generateSecureRandomString(25);
 
-    this.bkendSvc.createExpenditure(new Expenditure(expenditureName, userArray, currency, inviteToken)).subscribe({
-      next: () => this.router.navigate(['expenditure', inviteToken]),
-      complete: () => console.log(inviteToken),
-      error: (err) => console.log(err)
+    this.bkendSvc.createExpenditure(new Expenditure(expenditureName, userArray, currency, inviteToken)).subscribe(resp => {
+      if (resp.inviteToken) {
+        this.router.navigate([`expenditure/${resp.inviteToken}`])
+      } else {
+        console.log("Error occured :(");
+      }
     })
     console.log(expenditureName, userArray, currency);
   }

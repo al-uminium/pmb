@@ -2,6 +2,7 @@ package ppm.backend.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.security.SecureRandom;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -23,6 +24,26 @@ import ppm.backend.Model.User;
 
 @Service
 public class UtilService {
+
+  public String generateInviteToken(int length) {
+
+    String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    SecureRandom rand = new SecureRandom();
+
+    StringBuilder result = new StringBuilder(length);
+    int charactersLength = chars.length();
+    
+    for (int i = 0; i < length; i++) {
+        int randomIndex = rand.nextInt(charactersLength);  
+        result.append(chars.charAt(randomIndex));     
+    }
+    
+    return result.toString();
+  }
+
+  public String generateExpenditureURL(String inviteToken) {
+    return "https://www.paymeback.wtf/expenditure/%s".formatted(inviteToken);
+  }
 
   public Map<String, Double> calcCostIncurredPerUser(List<Expense> expenses) {
     Map<String, Double> costMap = expenses.stream()
