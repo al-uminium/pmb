@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, ValidatorFn } from '@angular/forms';
 import { User } from '../classes/user';
 
 @Injectable({
@@ -107,4 +107,12 @@ export class UtilService {
     }
     return user
   }
+
+  noDotValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const forbidden = /\./.test(control.value);
+      return forbidden ? { 'dotForbidden': { value: control.value } } : null;
+    };
+  }
+  
 }

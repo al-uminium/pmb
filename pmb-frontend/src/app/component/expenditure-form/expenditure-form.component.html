@@ -50,6 +50,11 @@
               A username is required!
             </div>
           }
+          @if (user.touched && user.errors?.['dotForbidden']) {
+            <div class="text-rose-400 font-light">
+              Sorry, periods are not allowed in a username.
+            </div>
+          }
         }
        </div>
         <button class="w-32 h-12 px-3 rounded-sm flex items-center justify-center bg-slate-700 hover:bg-amber-500" type="button" (click)="addUser()">

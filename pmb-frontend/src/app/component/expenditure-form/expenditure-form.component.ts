@@ -24,12 +24,12 @@ export class ExpenditureFormComponent implements OnInit{
   private readonly router = inject(Router);
 
   form!: FormGroup
-  defCurrencies: string[] = ["USD", "EUR", "GBP", "SGD"];
+  defCurrencies: string[] = ["USD", "EUR", "GBP", "SGD", "CAD"];
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      expenditureName: this.fb.control<string>('', Validators.required),
-      usernames: this.fb.array([this.fb.control<string>('', Validators.required)]),
+      expenditureName: this.fb.control<string>('', Validators.compose([Validators.required, Validators.maxLength(255)])),
+      usernames: this.fb.array([this.fb.control<string>('', Validators.compose([Validators.required, Validators.maxLength(255), this.utilSvc.noDotValidator()]))]),
       selectedCurrency: this.fb.control<string>('', Validators.required)
     })
   }
