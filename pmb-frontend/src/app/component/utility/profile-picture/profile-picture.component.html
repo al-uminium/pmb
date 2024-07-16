@@ -1,0 +1,18 @@
+<div class="flex items-center">
+  @if (size == "normal") {
+    <div [style.backgroundColor]="getRGBColor(username)"
+      [style.color]="getTextColor(username)" 
+      class="w-8 h-8 rounded-full flex items-center justify-center text-lg font-roboto">
+      {{ username.charAt(0).toUpperCase() }}
+    </div>
+  } @else {
+    <div [style.backgroundColor]="getRGBColor(username)"
+      [style.color]="getTextColor(username)" 
+      class="w-6 h-6 rounded-full flex items-center justify-center font-light text-xs font-roboto border border-gray-300 shadow-lg">
+      {{ username.charAt(0).toUpperCase() }}
+    </div>
+  }
+  @if (showUsername) {
+    <div class="ml-2">{{ username }}</div>
+  }
+</div>

@@ -1,0 +1,71 @@
+<div class="flex-1 max-w-screen-md w-full mx-auto px-4 pt-20 flex flex-col gap-6">
+@if (expenditure$ | async; as expenditure) {
+  @if (!expenditure.expenditureName) {
+    <h1 class="text-4xl text-slate-300 font-oswald">Looks like you wandered into an expenditure that doesn't exist yet...</h1>
+    <h3 class="text-xl text-slate-300 font-oswald">In that case, you should just create one!</h3>
+  } @else {
+      <h1 class="text-4xl text-slate-300 font-oswald">{{ expenditure.expenditureName }}</h1>
+      <div class="flex gap-2 justify-between items-center">
+        <div class="p-3 bg-slate-800 rounded-md">
+          <button class="p-2 bg-slate-700 rounded-sm" type="button">Expenses</button>
+          <button class="p-2 hover:bg-slate-900 hover:text-slate-300 rounded-sm transition" type="button" (click)="handleRouteToBalance()">Balances</button>
+        </div>
+        <div class="flex gap-3">
+          @if (authUser$ | async; as loginUser) {
+            @if (!loginUser.userName) {}
+            @else {
+              @if (showLinkModal) {
+                <app-select-user-modal [text]="generateLinkModalText(loginUser)" [users]="expenditure.users" (selectUserEvent)="linkUser($event, loginUser)" ></app-select-user-modal>
+                <div class="fixed inset-0 backdrop-blur-sm" (click)="toggleLinkModal()"></div>
+              }
+              <button class="p-4 h-10 flex justify-center items-center rounded-md bg-slate-600" (click)="toggleLinkModal()">
+                <ng-icon name="heroLink"></ng-icon>
+              </button>
+            }
+          }
+          <button class="flex content-center w-10 h-10 bg-amber-500 rounded-md" (click)="toggleUserModal()" type="button">
+            <div class="flex justify-center w-full items-center">
+              <ng-icon name="heroUsers"></ng-icon>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="bg-slate-800 p-6 mb-10 rounded-md">
+        <div class="flex gap-2 justify-between items-center pb-5 border-b border-b-slate-600">
+          <h3 class="text-2xl">Expenses</h3>
+          <button 
+            type="button" 
+            class="flex justify-center items-center font-roboto font-bold bg-gradient-to-r from-pink-500 from-10% to-yellow-500 w-10 h-10 rounded-md" 
+            (click)="toggleExpenseModal()">
+            <ng-icon name="heroPlus"></ng-icon>
+          </button>
+        </div>
+        @if (expenditure.expenses.length > 0) {
+          <div class="pt-3">
+            <app-expense-table 
+              [expenses]="expenditure.expenses" 
+              [currency]="expenditure.defaultCurrency">
+            </app-expense-table>
+          </div>
+        } @else if (expenditure.expenses.length == 0) {
+          <div class="text-sm text-slate-400">Looks like you don't have an expense yet. Go ahead and create one to get started!</div>
+        } 
+      </div>
+      @if (selectedUser$ | async; as selectedUser) {
+        @if (showExpenseModal) {
+          <app-expense-modal 
+          [usersList]="expenditure.users" 
+          [selectedUser]="selectedUser" 
+          currency={{expenditure.defaultCurrency}}
+          (createExpenseEvent)="createExpense($event)">
+        </app-expense-modal>
+        <div (click)="toggleExpenseModal()" class="z-10 fixed inset-0 backdrop-blur-sm"></div>
+      }
+    } 
+    @if (showUserModal) {
+      <app-select-user-modal text="Choose who you're viewing the expenses as!" [users]="expenditure.users" (selectUserEvent)="selectUser($event)" ></app-select-user-modal>
+      <div class="fixed z-10 inset-0 backdrop-blur-sm" (click)="toggleUserModal()"></div>
+    }
+  }
+}
+</div>

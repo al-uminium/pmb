@@ -1,0 +1,66 @@
+<div class="flex-1 max-w-screen-md w-full mx-auto px-4 pt-20 text-slate-200 flex flex-col gap-6">
+  <h1 class="text-4xl text-slate-300 font-oswald">Create Expenditure</h1>
+  <form [formGroup]="form" action="" (ngSubmit)="onSubmit()">
+    <div class="p-6 bg-slate-800 rounded-md box-border">
+      <h2 class="text-2xl font-bold font-oswald pb-2">Expenditure Information</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 gap-3">
+          <label 
+            class="font-roboto text-slate-200 pt-2" 
+            for="expenditure-name">
+            Expenditure Name
+          </label>
+          <input 
+            type="text" 
+            name="expenditure-name" 
+            id="expenditure-name"
+            class="bg-inherit border-b p-2 border-slate-500 font-roboto"
+            formControlName="expenditureName"
+            placeholder="My First Expenditure"
+          >
+          @if (expenditureName.touched && expenditureName.errors?.['required']) {
+            <div class="text-rose-400 font-light">
+              Expenditure name is required!
+            </div>
+          }
+        </div>
+        <div class="grid grid-cols-1 gap-3">
+          <app-dropdown [values]="defCurrencies" value="Select your currency" (valueChange)="setCurrency($event)"></app-dropdown>
+          <div class="text-xs text-slate-400">More currencies will be added in the future.</div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4 p-6 bg-slate-800 rounded-md box-border grid grid-cols-1 gap-4">
+      <h2 class="text-2xl font-bold font-oswald">Participants</h2>
+      <div formArrayName="usernames" class="grid gap-4" >
+        @for (user of usernames.controls; track $index) {
+          <label class="flex w-10/12 justify-between border-b border-slate-500 pt-4" for="user-{{ $index }}">
+            <input 
+              type="text" 
+              name="users" 
+              id="user-{{ $index }}"
+              class="bg-inherit font-roboto self-center w-11/12 py-2 pl-2"
+              placeholder="Enter a username here..."
+              [formControlName]="$index"
+            >
+            <ng-icon class="self-center w-1/12 cursor-pointer" [id]="$index" (click)="deleteUser($index)" name="heroXMark"></ng-icon>
+          </label>
+          @if (user.touched && user.errors?.['required']) {
+            <div class="text-rose-400 font-light">
+              A username is required!
+            </div>
+          }
+        }
+       </div>
+        <button class="w-32 h-12 px-3 rounded-sm flex items-center justify-center bg-slate-700 hover:bg-amber-500" type="button" (click)="addUser()">
+          <ng-icon name="heroUserPlus"></ng-icon>
+          <div class="text-sm font-light font-roboto pl-1 " type="button">Add user</div>
+        </button>
+    </div>
+    @if (form.valid) {
+      <button [disabled]="!form.valid"  class="mt-5 font-roboto rounded-md font-bold bg-gradient-to-r from-pink-500 from-10% to-yellow-500 w-40 h-12 mb-4" type="submit">Create Expenditure</button>
+    } @else {
+      <button [disabled]="!form.valid"  class="blur-sm mt-5 font-roboto rounded-md font-bold bg-gradient-to-r from-pink-500 from-10% to-yellow-500 w-40 h-12 mb-4" type="submit">Create Expenditure</button>
+    }
+  </form>
+</div>

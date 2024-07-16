@@ -1,0 +1,68 @@
+
+@if (expenditure$ | async; as expenditure) {
+  <div class="flex-1 max-w-screen-md w-full mx-auto px-4 pt-20 flex flex-col gap-6">
+    <h1 class="text-4xl text-slate-300 font-oswald">{{ expenditure.expenditureName }}</h1>
+    <div class="flex gap-2 justify-between items-center">
+      <div class="p-3 bg-slate-800 rounded-md">
+        <button class="p-2" type="button" (click)="handleRouteToExpense()">Expenses</button>
+        <button class="p-2 bg-slate-700 rounded-sm" type="button">Balances</button>
+      </div>
+    </div>
+    <div class="bg-slate-800 p-4 rounded-md">
+      <div class="text-2xl pb-5">Balances</div>
+      @for (user of expenditure.users; track $index) {
+        <div class="grid grid-cols-2 p-2 max-w-sm">
+          <div>
+            <app-profile-picture [username]="user.userName"></app-profile-picture>
+          </div>
+          @if (user.balance < 0) {
+            <div class="self-center text-rose-500">
+              {{ user.balance }} {{ expenditure.defaultCurrency }}
+            </div>
+          } @else {
+            <div class="self-center text-lime-400">
+              {{ user.balance }} {{ expenditure.defaultCurrency }}
+            </div>
+          }
+        </div>
+      }
+    </div>
+    <div class="bg-slate-800 p-5 mb-20 rounded-md">
+      <div class="text-2xl pb-5">Settlements</div>
+      @if (settlements$ | async; as settlements) {
+        <!-- this is super ugly but it works, might try to think of a way to make it simpler in the future -->
+        @for (user of expenditure.users; track $index) {
+          @for (personUserOwes of expenditure.users; track $index) {
+            @if (settlements[user.userName][personUserOwes.userName] < 0) {
+              <div class="flex justify-between font-light">
+                <div>
+                  {{ user.userName }} owes {{ personUserOwes.userName }} {{settlements[user.userName][personUserOwes.userName]*-1}} {{ expenditure.defaultCurrency }}
+                </div>
+                <div>
+                  @if (selectedUser$ | async; as selectedUser) {
+                    @if (user.userId == selectedUser.userId) {
+                      <button 
+                        class="text-amber-500"
+                        (click)="handleRepay(selectedUser, personUserOwes, settlements[selectedUser.userName][personUserOwes.userName]*-1)">
+                        Repay
+                      </button>
+                    }
+                    @if ( personUserOwes.paypalEmail ) {
+                      <app-paypal-pay 
+                        [payeeEmail]="personUserOwes.paypalEmail" 
+                        [amt]="settlements[user.userName][personUserOwes.userName]*-1"
+                        [inviteToken]="inviteToken" ></app-paypal-pay>
+                    }
+                  }
+                </div>
+              </div>
+            }           
+          }
+        } 
+      }
+      @if (checkIfAllBalanceNeutral(expenditure.users)) {
+        <div class="font-light text-slate-300">Looks like your group has no settlements! 🎉</div> 
+      }
+    </div>
+  </div>
+}

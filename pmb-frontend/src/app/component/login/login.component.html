@@ -1,0 +1,30 @@
+<div class="flex-1 max-w-screen-md w-full mx-auto px-4 pt-20 flex flex-col gap-6">
+  <h1 class="text-4xl text-slate-300 font-oswald">
+    Login
+  </h1>
+  <form class="bg-slate-800 rounded-md grid grid-cols-2 gap-4" action="" [formGroup]="form">
+    <div class="p-4 flex flex-col gap-2">
+      <div class="flex flex-col gap-2 h-full">
+        <div class="flex flex-col gap-2">
+          <label for="email" class="text-slate-200">Email</label>
+          <input type="text" id="email" class="bg-inherit border-b border-slate-500 font-roboto" formControlName="email">
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="password">Password</label>
+          <input type="password" id="password" class="bg-inherit border-b border-slate-500 font-roboto" formControlName="password">
+        </div>
+        @if (isLoginFailed) {
+          <div class="text-rose-400 font-light">
+            Incorrect e-mail or password. 
+          </div>
+        }
+        <button type="submit" [disabled]="!form.valid" class="justify-self-end mt-5 font-roboto rounded-md font-bold bg-gradient-to-r from-pink-500 from-10% to-yellow-500 w-40 h-12" (click)="handleLogin()">
+          Login
+        </button>
+      </div>
+    </div>
+    <div class="box-border max-sm:hidden">
+      <img src="../../../assets/day6-open-vault.png" alt="" srcset="">
+    </div>
+  </form>
+</div>

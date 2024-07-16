@@ -1,0 +1,25 @@
+<ul>
+  @for (expense of expenses; track $index) {
+    <li class="flex justify-between p-4 rounded-md hover:bg-slate-600 cursor-pointer">
+      <div>
+        <div class="font-light">{{ expense.expenseName }}</div>
+
+        <div class="flex font-extralight text-sm text-slate-300">
+          <div>
+            {{ generateExpenseSummary(expense) }}
+          </div>
+        </div>
+
+      </div>
+      <div class="flex">
+        <div class="flex font-bold text-lg">
+          <div class="pr-2">{{ currency }}</div>
+          <div>{{ expense.totalCost }}</div>
+        </div>
+        <div class="self-center pl-5">
+          <ng-icon name="heroChevronDoubleRight"></ng-icon>
+        </div>
+      </div>
+    </li>
+  }
+</ul>

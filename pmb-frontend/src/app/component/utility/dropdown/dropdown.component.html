@@ -1,0 +1,14 @@
+<div>
+  <div class="bg-slate-700 max-w-60 p-2 rounded-sm relative flex justify-between items-center hover:cursor-pointer" (click)="toggleDropdown()">{{ value }} <ng-icon class="ml-3" name="heroChevronDown"></ng-icon></div>
+  @if (showDropdown) {
+    <ul class="absolute mt-2 rounded-sm w-20 bg-slate-700">
+      @for (val of values; track $index) {
+        <li class="p-2 text-center" (click)="selectVal(val)">
+          <div class="p-1 rounded-sm hover:cursor-pointer hover:bg-amber-500">
+            {{ val }}
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</div>

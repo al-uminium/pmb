@@ -1,0 +1,9 @@
+<div class="relative" (click)="toggleDropdown()">
+  <ng-icon name="heroEllipsisVertical"></ng-icon>
+  @if (showDropdown) {
+    <div class="absolute right-0 top-5 w-fit text-end p-2 flex flex-col bg-slate-500 rounded-md">
+      <a class="p-2 hover:bg-slate-600 rounded-md" href="/user">Dashboard</a>
+      <a class="p-2 hover:bg-slate-600 rounded-md" href="/" (click)="handleLogOut()">Logout</a>
+    </div>
+  }
+</div>

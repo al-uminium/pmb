@@ -1,0 +1,35 @@
+<div class="flex-1 max-w-screen-md w-full mx-auto px-4 pt-20 flex flex-col gap-6">
+ @if (authUser$ | async; as authUser) {
+  @if (!authUser.userName) {
+    <h1 class="text-4xl text-slate-300 font-oswald">Hello, unregistered user! Not sure how you got here, but feel free to register!</h1>
+  } @else {
+    <h1 class="text-4xl text-slate-300 font-oswald">Hello, {{ authUser.userName }}!</h1>
+    <div class="bg-slate-800 p-4 rounded-md">
+      <h3 class="text-2xl pb-5">Your Expenditures</h3>
+      @if (expenditures$ | async; as expenditures) {
+      <div>
+      @if (expenditures.length > 0) {
+        <ul>
+        @for (expenditure of expenditures; track $index) {
+            <li>
+              <a class="font-light text-slate-200" [href]="generateUrlForExpenditure(expenditure)">{{ expenditure.expenditureName }}</a>
+            </li>
+          }
+        </ul>
+          } @else {
+            <div class="font-light">
+              Looks like you don't have an expenditure yet.
+            </div>
+          }
+        </div>
+      }
+      </div>
+    <div class="flex justify-between">
+      <a class="p-2 flex justify-center items-center font-roboto font-bold bg-gradient-to-r from-pink-500 from-10% to-yellow-500 w-fit h-10 rounded-md" href="/expenditure/create">Create Expenditure</a>
+      <div class="self-center">
+        <app-paypal-login></app-paypal-login>
+      </div>
+    </div>
+  }
+}
+</div>
