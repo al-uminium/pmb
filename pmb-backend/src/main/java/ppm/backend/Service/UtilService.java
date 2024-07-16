@@ -41,10 +41,6 @@ public class UtilService {
     return result.toString();
   }
 
-  public String generateExpenditureURL(String inviteToken) {
-    return "https://www.paymeback.wtf/expenditure/%s".formatted(inviteToken);
-  }
-
   public Map<String, Double> calcCostIncurredPerUser(List<Expense> expenses) {
     Map<String, Double> costMap = expenses.stream()
         .flatMap(expense -> expense.getExpenseSplit().entrySet().stream())

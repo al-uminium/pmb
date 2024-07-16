@@ -7,18 +7,6 @@ import { User } from '../classes/user';
 })
 export class UtilService {
 
-  generateSecureRandomString(length: number) {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-    const randomValues = new Uint32Array(length);
-    window.crypto.getRandomValues(randomValues);
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(randomValues[i] % charactersLength);
-    }
-    return result;
-  }
-
   getExpenseSplitFromFormGroup(arr: FormGroup[], users: User[]): { [key: string]: number } {
     const expenseSplit = {} as { [key: string]: number };
     for(let i = 0; i < arr.length; i++) {

@@ -8,11 +8,10 @@ export class Expenditure {
   inviteToken!: string;
   expenses!: Expense[]
 
-  constructor(expName: string, users: User[], currency: string, invToken: string) {
+  constructor(expName: string, users: User[], currency: string) {
     this.expenditureName = expName;
     this.users = users;
     this.defaultCurrency = currency;
-    this.inviteToken = invToken;
   }
 
   

@@ -62,9 +62,8 @@ export class ExpenditureFormComponent implements OnInit{
     const expenditureName = this.expenditureName?.value;
     const userArray = this.utilSvc.getUsersFromForm(this.usernames);
     const currency = this.selectedCurrency?.value;
-    const inviteToken = this.utilSvc.generateSecureRandomString(25);
 
-    this.bkendSvc.createExpenditure(new Expenditure(expenditureName, userArray, currency, inviteToken)).subscribe(resp => {
+    this.bkendSvc.createExpenditure(new Expenditure(expenditureName, userArray, currency)).subscribe(resp => {
       if (resp.inviteToken) {
         this.router.navigate([`expenditure/${resp.inviteToken}`])
       } else {
