@@ -63,6 +63,3 @@ CREATE TABLE Invites (
   FOREIGN KEY (expenditure_id) REFERENCES Expenditures (expenditure_id),
   PRIMARY KEY (expenditure_id)
 );
-
-  -- expire_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP + INTERVAL 60 DAY, 
-  -- idk if i need this yet
